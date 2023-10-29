@@ -1,3 +1,10 @@
+/*
+  https://github.com/vike256/Unibot
+  For license see LICENSE
+
+  ./src/wifi/wifi.ino
+*/
+
 #include <WiFi.h>
 #include <Mouse.h>
 

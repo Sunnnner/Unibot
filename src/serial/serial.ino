@@ -1,3 +1,10 @@
+/*
+  https://github.com/vike256/Unibot
+  For license see LICENSE
+
+  ./src/serial/serial.ino
+*/
+
 #include <Mouse.h>
  
 int x = 0;

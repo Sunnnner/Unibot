@@ -1,3 +1,10 @@
+/*
+  https://github.com/vike256/Unibot
+  For license see LICENSE
+
+  ./src/ethernet/ethernet.ino
+*/
+
 #include <Mouse.h>
 #include <Ethernet.h>
 #include <SPI.h>
