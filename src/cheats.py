@@ -4,10 +4,9 @@ import win32api
 class Cheats:
     def __init__(self, config):
         # Aim
-        self.move_x = 0
-        self.move_y = 0
-        self.previous_x = 0
-        self.previous_y = 0
+        self.move_x, self.move_y = (0, 0)
+        self.previous_x, self.previous_y = (0, 0)
+        self.remainder_x, self.remainder_y = (0, 0)
         self.smooth = config.smooth
         self.speed = config.speed
         self.x_multiplier = config.x_multiplier
@@ -35,6 +34,15 @@ class Cheats:
             # Apply smoothing with the last x and y value
             x = self.previous_x + self.smooth * (x - self.previous_x)
             y = self.previous_y + self.smooth * (y - self.previous_y)
+
+            x += self.remainder_x
+            y += self.remainder_y
+            self.remainder_x = x
+            self.remainder_y = y
+            x = int(x)
+            y = int(y)
+            self.remainder_x -= x
+            self.remainder_y -= y
 
             self.previous_x, self.previous_y = (x, y)
             self.move_x, self.move_y = (x, y)
