@@ -62,7 +62,7 @@ def main():
                     elif config.recoil_mode == 'offset':
                         if wapi.GetAsyncKeyState(0x01) < 0:
                             if config.recoil_offset < config.max_offset:
-                                config.recoil_offset += config.recoilY / delta_time
+                                config.recoil_offset += config.recoil_y / delta_time
                                 if config.recoil_offset > config.max_offset:
                                     config.recoil_offset = config.max_offset
                         else:
@@ -76,11 +76,11 @@ def main():
                 mouse.click()
 
             mouse.move(x, y)
-            
+
             time_spent = (time.time() - start_time) * 1000
             if time_spent < screen.fps:
                 time.sleep((screen.fps - time_spent) / 1000)
-        
+
         del utils
         del config
         del mouse

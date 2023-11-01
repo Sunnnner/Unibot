@@ -52,7 +52,7 @@ class Screen:
             self.display_mode = config.display_mode
             self.window_name = 'Unibot Display'
             self.window_resolution = (
-                self.screen.width // 2, 
+                self.screen.width // 2,
                 self.screen.height // 2
             )
             cv2.namedWindow(self.window_name)
@@ -70,7 +70,7 @@ class Screen:
         self.target = None
         trigger = False
         self.closest_contour = None
-        
+
         self.img = self.screenshot(self.fov_region)
         hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
         self.mask = cv2.inRange(hsv, self.lower_color, self.upper_color)
@@ -82,7 +82,7 @@ class Screen:
 
                 for x, y in zip(lit_pixels[1], lit_pixels[0]):
                     distance = np.sqrt((x - self.fov_center[0])**2 + (y - self.fov_center[1])**2)
-                    
+
                     if distance < min_distance:
                         min_distance = distance
                         self.target = (x, y)
@@ -107,7 +107,7 @@ class Screen:
                         min_distance = distance
                         self.closest_contour = contour
                         self.target = (center_x, center_y)
-            
+
                 value = 8
                 if (  # Check if crosshair is inside the closest target
                     cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0], self.fov_center[1]), False) >= 0 and
@@ -121,7 +121,7 @@ class Screen:
 
         if self.debug:
             self.debug_display()
- 
+
         return self.target, trigger
 
     def debug_display(self):
@@ -175,18 +175,18 @@ class Screen:
                 (0, 255, 0),
                 2
             )
-        
+
         offset_x = (self.screen.width - self.fov) // 2
         offset_y = (self.screen.height - self.fov) // 2 - self.offset
         full_img[offset_y:offset_y+debug_img.shape[1], offset_x:offset_x+debug_img.shape[0]] = debug_img
         # Draw a rectangle crosshair
-        full_img = cv2.rectangle( 
-            full_img, 
+        full_img = cv2.rectangle(
+            full_img,
             (self.screen_center[0] - 5, self.screen_center[1] - 5),
             (self.screen_center[0] + 5, self.screen_center[1] + 5),
             (255, 255, 255),
             1
-        ) 
+        )
         full_img = cv2.resize(full_img, self.window_resolution)
         cv2.imshow(self.window_name, full_img)
         cv2.waitKey(1)
