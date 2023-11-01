@@ -6,7 +6,7 @@
     This class is used to read the config and to check if each feature is on.
 """
 import keyboard
-import win32api as wapi
+import win32api
 from time import sleep
 
 from configReader import ConfigReader
@@ -23,6 +23,7 @@ class Utils:
         self.key_toggle_recoil = self.config.key_toggle_recoil
         self.key_trigger = self.config.key_trigger
         self.key_exit = self.config.key_exit
+        self.aim_keys = self.config.aim_keys
         self.aim_state = False
         self.recoil_state = False
         self.recoil_offset = 0
@@ -51,12 +52,14 @@ class Utils:
         self.config.read_config()
 
     def get_aim_state(self):
-        if self.aim_state and (wapi.GetAsyncKeyState(0x01) < 0 or wapi.GetAsyncKeyState(0x02) < 0):
-            return True
+        if self.aim_state:
+            for key in self.aim_keys:
+                if win32api.GetAsyncKeyState(key) < 0:
+                    return True
         return False
 
     def get_trigger_state(self):
-        if wapi.GetAsyncKeyState(self.key_trigger) < 0:
+        if win32api.GetAsyncKeyState(self.key_trigger) < 0:
             return True
         return False
 
