@@ -35,8 +35,11 @@ class Cheats:
             x = self.previous_x + self.smooth * (x - self.previous_x)
             y = self.previous_y + self.smooth * (y - self.previous_y)
 
+            # Add remainder from previous calculation
             x += self.remainder_x
             y += self.remainder_y
+
+            # Round x and y, and calculate new remainder
             self.remainder_x = x
             self.remainder_y = y
             x = int(x)
