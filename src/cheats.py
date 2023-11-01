@@ -6,6 +6,8 @@ class Cheats:
         # Aim
         self.move_x = 0
         self.move_y = 0
+        self.previous_x = 0
+        self.previous_y = 0
         self.smooth = config.smooth
         self.speed = config.speed
         self.x_multiplier = config.x_multiplier
@@ -19,8 +21,11 @@ class Cheats:
         self.recoil_recover = config.recoil_recover
 
     def calculate_aim(self, state, target):
+        self.move_x, self.move_y = (0, 0)
+
         if not state:
             return
+
         if target is not None:
             x, y = target
 
@@ -28,14 +33,11 @@ class Cheats:
             y *= self.speed / self.x_multiplier
 
             # Apply smoothing with the last x and y value
-            x = self.move_x + self.smooth * (x - self.move_x)
-            y = self.move_y + self.smooth * (y - self.move_y)
+            x = self.previous_x + self.smooth * (x - self.previous_x)
+            y = self.previous_y + self.smooth * (y - self.previous_y)
 
-            self.move_x = x
-            self.move_y = y
-        else:
-            self.move_x = 0
-            self.move_y = 0
+            self.previous_x, self.previous_y = (x, y)
+            self.move_x, self.move_y = (x, y)
 
     def apply_recoil(self, state, delta_time):
         if state:
