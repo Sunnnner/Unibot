@@ -188,7 +188,7 @@ class Screen:
 
         offset_x = (self.screen.width - self.fov) // 2
         offset_y = (self.screen.height - self.fov) // 2 - self.offset - recoil_offset
-        full_img[offset_y:offset_y+debug_img.shape[1], offset_x:offset_x+debug_img.shape[0]] = debug_img
+        full_img[offset_y:offset_y+debug_img.shape[0], offset_x:offset_x+debug_img.shape[1]] = debug_img
         # Draw a rectangle crosshair
         full_img = cv2.rectangle(
             full_img,
