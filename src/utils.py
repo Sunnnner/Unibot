@@ -53,9 +53,12 @@ class Utils:
 
     def get_aim_state(self):
         if self.aim_state:
-            for key in self.aim_keys:
-                if win32api.GetAsyncKeyState(key) < 0:
-                    return True
+            if self.aim_keys[0] == 'off':
+                return True
+            else:
+                for key in self.aim_keys:
+                    if win32api.GetAsyncKeyState(key) < 0:
+                        return True
         return False
 
     def get_trigger_state(self):

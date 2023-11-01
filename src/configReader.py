@@ -136,9 +136,13 @@ class ConfigReader:
         self.key_toggle_recoil = self.parser.get('key_binds', 'key_toggle_recoil')
         self.key_trigger = int(self.parser.get('key_binds', 'key_trigger'))
         self.key_exit = self.parser.get('key_binds', 'key_exit')
-        aim_keys_str = self.parser.get('key_binds', 'aim_keys').split(',')
-        for key in aim_keys_str:
-            self.aim_keys.append(int(key))
+        aim_keys_str = self.parser.get('key_binds', 'aim_keys')
+        if not aim_keys_str == 'off':
+            aim_keys_str = aim_keys_str.split(',')
+            for key in aim_keys_str:
+                self.aim_keys.append(int(key))
+        else:
+            self.aim_keys = ['off']
 
         # Get debug settings
         value = self.parser.get('debug', 'enabled').lower()
