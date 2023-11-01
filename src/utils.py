@@ -26,7 +26,6 @@ class Utils:
         self.aim_keys = self.config.aim_keys
         self.aim_state = False
         self.recoil_state = False
-        self.recoil_offset = 0
 
     def check_key_binds(self):
         if keyboard.is_pressed(self.key_reload_config):
@@ -39,7 +38,6 @@ class Utils:
 
         if keyboard.is_pressed(self.key_toggle_recoil):
             self.recoil_state = not self.recoil_state
-            self.recoil_offset = 0
             print("RECOIL: " + str(self.recoil_state))
             sleep(self.delay)
         

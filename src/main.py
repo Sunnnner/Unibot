@@ -6,8 +6,8 @@
     This is the main loop of the program.
 """
 import time
-import win32api as wapi
 
+from cheats import Cheats
 from mouse import Mouse
 from screen import Screen
 from utils import Utils
@@ -16,11 +16,10 @@ from utils import Utils
 def main():
     while True:
         start_time = time.time()
-        previous_x = 0
-        previous_y = 0
 
         utils = Utils()
         config = utils.config
+        cheats = Cheats(config)
         mouse = Mouse(config)
         screen = Screen(config)
 
@@ -29,60 +28,25 @@ def main():
         while True:
             delta_time = (time.time() - start_time) * 1000
             start_time = time.time()
-            x = 0
-            y = 0
             
             reload = utils.check_key_binds()
             if reload:
                 break
 
-            target, trigger = screen.get_target(utils.recoil_offset)
+            target, trigger = screen.get_target(cheats.recoil_offset)
 
-            # AIM if mouse left or right down
-            if utils.get_aim_state():
-                if target is not None:
-                    x = target[0] - screen.fov_center[0]
-                    y = target[1] - screen.fov_center[1]
-
-                    x *= config.speed
-                    y *= config.speed / config.x_multiplier
-
-                    # Smoothing
-                    x = previous_x + config.smooth * (x - previous_x)
-                    y = previous_y + config.smooth * (y - previous_y)
-                    previous_x = x
-                    previous_y = y
-
-            # RECOIL
-            if utils.recoil_state:
-                if delta_time != 0:
-                    if config.recoil_mode == 'move' and wapi.GetAsyncKeyState(0x01) < 0:
-                        x += config.recoil_x / delta_time
-                        y += config.recoil_y / delta_time
-                    elif config.recoil_mode == 'offset':
-                        if wapi.GetAsyncKeyState(0x01) < 0:
-                            if utils.recoil_offset < config.max_offset:
-                                utils.recoil_offset += config.recoil_y / delta_time
-                                if utils.recoil_offset > config.max_offset:
-                                    utils.recoil_offset = config.max_offset
-                        else:
-                            if utils.recoil_offset > 0:
-                                utils.recoil_offset -= config.recoil_recover / delta_time
-                                if utils.recoil_offset < 0:
-                                    utils.recoil_offset = 0
-
-            # TRIGGER
+            cheats.calculate_aim(utils.get_aim_state(), target)
+            cheats.apply_recoil(utils.recoil_state, delta_time)
             if utils.get_trigger_state() and trigger:
                 mouse.click()
-
-            mouse.move(x, y)
+            mouse.move(cheats.move_x, cheats.move_y)
 
             time_spent = (time.time() - start_time) * 1000
             if time_spent < screen.fps:
                 time.sleep((screen.fps - time_spent) / 1000)
 
         del utils
-        del config
+        del cheats
         del mouse
         del screen
         print('Reloading')

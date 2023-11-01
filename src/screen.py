@@ -82,7 +82,9 @@ class Screen:
                 min_distance = float('inf')
 
                 for x, y in zip(lit_pixels[1], lit_pixels[0]):
-                    distance = np.sqrt((x - self.fov_center[0])**2 + (y - self.fov_center[1])**2)
+                    x -= self.fov_center[0]
+                    y -= self.fov_center[1]
+                    distance = np.sqrt(x**2 + y**2)
 
                     if distance < min_distance:
                         min_distance = distance
@@ -100,23 +102,30 @@ class Screen:
             if len(contours) != 0:
                 min_distance = float('inf')
                 for contour in contours:
-                    x, y, w, h = cv2.boundingRect(contour)
-                    center_x = x + w // 2
-                    center_y = int(y + h * (1 - self.head_height))
-                    distance = np.sqrt((center_x - self.fov_center[0])**2 + (center_y - self.fov_center[1])**2)
+                    rect_x, rect_y, rect_w, rect_h = cv2.boundingRect(contour)
+                    x = rect_x + rect_w // 2 - self.fov_center[0]
+                    y = int(rect_y + rect_h * (1 - self.head_height)) - self.fov_center[0]
+                    distance = np.sqrt(x**2 + y**2)
                     if distance < min_distance:
                         min_distance = distance
                         self.closest_contour = contour
-                        self.target = (center_x, center_y)
+                        self.target = (x, y)
 
                 value = 8
-                if (  # Check if crosshair is inside the closest target
-                    cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0], self.fov_center[1]), False) >= 0 and
+                if (
+                    # Check if crosshair is inside the closest target
+                    cv2.pointPolygonTest(
+                        self.closest_contour, (self.fov_center[0], self.fov_center[1]), False) >= 0 and
+
                     # Eliminate a lot of false positives by also checking pixels near the crosshair.
-                    cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0] + value, self.fov_center[1]),False) >= 0 and
-                    cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0] - value, self.fov_center[1]),False) >= 0 and
-                    cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0], self.fov_center[1] + value),False) >= 0 and
-                    cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0], self.fov_center[1] - value),False) >= 0
+                    cv2.pointPolygonTest(
+                        self.closest_contour, (self.fov_center[0] + value, self.fov_center[1]), False) >= 0 and
+                    cv2.pointPolygonTest(
+                        self.closest_contour, (self.fov_center[0] - value, self.fov_center[1]), False) >= 0 and
+                    cv2.pointPolygonTest(
+                        self.closest_contour, (self.fov_center[0], self.fov_center[1] + value), False) >= 0 and
+                    cv2.pointPolygonTest(
+                        self.closest_contour, (self.fov_center[0], self.fov_center[1] - value), False) >= 0
                 ):
                     trigger = True
 
@@ -125,7 +134,8 @@ class Screen:
 
         return self.target, trigger
 
-    def get_region(self, region, recoil_offset):
+    @staticmethod
+    def get_region(region, recoil_offset):
         region = (
             region[0],
             region[1] - recoil_offset,
@@ -152,7 +162,7 @@ class Screen:
             debug_img = cv2.line(
                 debug_img,
                 self.fov_center,
-                self.target,
+                (self.target[0] + self.fov_center[0], self.target[1] + self.fov_center[1]),
                 (0, 255, 0),
                 2
             )
