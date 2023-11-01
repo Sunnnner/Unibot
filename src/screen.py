@@ -66,12 +66,13 @@ class Screen:
             if image is not None:
                 return np.array(image)
 
-    def get_target(self):
+    def get_target(self, recoil_offset):
+        recoil_offset = int(recoil_offset)
         self.target = None
         trigger = False
         self.closest_contour = None
 
-        self.img = self.screenshot(self.fov_region)
+        self.img = self.screenshot(self.get_region(self.fov_region, recoil_offset))
         hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
         self.mask = cv2.inRange(hsv, self.lower_color, self.upper_color)
 
@@ -120,11 +121,20 @@ class Screen:
                     trigger = True
 
         if self.debug:
-            self.debug_display()
+            self.debug_display(recoil_offset)
 
         return self.target, trigger
 
-    def debug_display(self):
+    def get_region(self, region, recoil_offset):
+        region = (
+            region[0],
+            region[1] - recoil_offset,
+            region[2],
+            region[3] - recoil_offset
+        )
+        return region
+
+    def debug_display(self, recoil_offset):
         if self.display_mode == 'game':
             debug_img = self.img
         else:
@@ -177,7 +187,7 @@ class Screen:
             )
 
         offset_x = (self.screen.width - self.fov) // 2
-        offset_y = (self.screen.height - self.fov) // 2 - self.offset
+        offset_y = (self.screen.height - self.fov) // 2 - self.offset - recoil_offset
         full_img[offset_y:offset_y+debug_img.shape[1], offset_x:offset_x+debug_img.shape[0]] = debug_img
         # Draw a rectangle crosshair
         full_img = cv2.rectangle(

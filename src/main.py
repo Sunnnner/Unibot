@@ -36,7 +36,7 @@ def main():
             if reload:
                 break
 
-            target, trigger = screen.get_target()
+            target, trigger = screen.get_target(utils.recoil_offset)
 
             # AIM if mouse left or right down
             if utils.get_aim_state():
@@ -61,15 +61,15 @@ def main():
                         y += config.recoil_y / delta_time
                     elif config.recoil_mode == 'offset':
                         if wapi.GetAsyncKeyState(0x01) < 0:
-                            if config.recoil_offset < config.max_offset:
-                                config.recoil_offset += config.recoil_y / delta_time
-                                if config.recoil_offset > config.max_offset:
-                                    config.recoil_offset = config.max_offset
+                            if utils.recoil_offset < config.max_offset:
+                                utils.recoil_offset += config.recoil_y / delta_time
+                                if utils.recoil_offset > config.max_offset:
+                                    utils.recoil_offset = config.max_offset
                         else:
-                            if config.recoil_offset > 0:
-                                config.recoil_offset -= config.recoil_recover / delta_time
-                                if config.recoil_offset < 0:
-                                    config.recoil_offset = 0
+                            if utils.recoil_offset > 0:
+                                utils.recoil_offset -= config.recoil_recover / delta_time
+                                if utils.recoil_offset < 0:
+                                    utils.recoil_offset = 0
 
             # TRIGGER
             if utils.get_trigger_state() and trigger:
