@@ -113,10 +113,10 @@ class Screen:
                 if (  # Check if crosshair is inside the closest target
                     cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0], self.fov_center[1]), False) >= 0 and
                     # Eliminate a lot of false positives by also checking pixels near the crosshair.
-                    self.thresh[self.fov_center[0] + value, self.fov_center[1]] == 255 and
-                    self.thresh[self.fov_center[0] - value, self.fov_center[1]] == 255 and
-                    self.thresh[self.fov_center[0], self.fov_center[1] - value] == 255 and
-                    self.thresh[self.fov_center[0], self.fov_center[1] + value] == 255
+                    cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0] + value, self.fov_center[1]),False) >= 0 and
+                    cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0] - value, self.fov_center[1]),False) >= 0 and
+                    cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0], self.fov_center[1] + value),False) >= 0 and
+                    cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0], self.fov_center[1] - value),False) >= 0
                 ):
                     trigger = True
 
