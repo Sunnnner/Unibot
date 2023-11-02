@@ -1,3 +1,11 @@
+"""
+    https://github.com/vike256/Unibot
+    For license see LICENSE
+
+    Consider donating: https://github.com/vike256#donations
+
+    ./src/cheats.py
+"""
 import win32api
 
 
