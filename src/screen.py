@@ -2,6 +2,8 @@
     https://github.com/vike256/Unibot
     For license see LICENSE
 
+    Consider donating: https://github.com/vike256#donations
+
     ./src/screen.py
     This class is used to:
         - Capture a screenshot,
