@@ -1,7 +1,7 @@
 # Unibot
 
 **🎁 Consider donating:** [Ways to donate](https://github.com/vike256#donations)  
-**⭐ And giving a star if you like the project**
+**⭐ Give a star if you like the project**
 
 Unibot is a program made for 3D games that detects targets on the screen based on a specified range of color.  
   
