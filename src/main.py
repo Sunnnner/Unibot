@@ -16,7 +16,9 @@ from utils import Utils
 
 
 def main():
+    # Program loop
     while True:
+        # Track delta time
         start_time = time.time()
 
         utils = Utils()
@@ -27,22 +29,32 @@ def main():
 
         print('ON')
 
+        # Cheat loop
         while True:
             delta_time = (time.time() - start_time) * 1000
             start_time = time.time()
             
-            reload = utils.check_key_binds()
-            if reload:
+            reload_config = utils.check_key_binds()
+            if reload_config:
                 break
 
+            # Get target position and check if there is a target in the center of the screen
             target, trigger = screen.get_target(cheats.recoil_offset)
 
+            # Calculate movement based on target position
             cheats.calculate_aim(utils.get_aim_state(), target)
+
+            # Apply recoil
             cheats.apply_recoil(utils.recoil_state, delta_time)
+
+            # Shoot if target in the center of the screen
             if utils.get_trigger_state() and trigger:
                 mouse.click()
+
+            # Move the mouse based on the previous calculations
             mouse.move(cheats.move_x, cheats.move_y)
 
+            # Do not loop above the set refresh rate
             time_spent = (time.time() - start_time) * 1000
             if time_spent < screen.fps:
                 time.sleep((screen.fps - time_spent) / 1000)

@@ -109,7 +109,7 @@ class Mouse:
                 win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
                 print(f'C({random_delay * 1000:g})')
 
-    def get_response(self):
+    def get_response(self):  # Waits for a response before sending a new instruction
         match self.com_type:
             case 'socket':
                 return f'Socket: {self.client.recv(4).decode()}'

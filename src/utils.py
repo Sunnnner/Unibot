@@ -29,7 +29,7 @@ class Utils:
         self.aim_state = False
         self.recoil_state = False
 
-    def check_key_binds(self):
+    def check_key_binds(self):  # Return a boolean based on if the config needs to be reloaded
         if keyboard.is_pressed(self.key_reload_config):
             return True
 
