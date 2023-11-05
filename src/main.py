@@ -38,18 +38,19 @@ def main():
             if reload_config:
                 break
 
-            # Get target position and check if there is a target in the center of the screen
-            target, trigger = screen.get_target(cheats.recoil_offset)
+            if utils.get_aim_state() or utils.get_trigger_state():
+                # Get target position and check if there is a target in the center of the screen
+                target, trigger = screen.get_target(cheats.recoil_offset)
 
-            # Calculate movement based on target position
-            cheats.calculate_aim(utils.get_aim_state(), target)
+                # Calculate movement based on target position
+                cheats.calculate_aim(utils.get_aim_state(), target)
+
+                # Shoot if target in the center of the screen
+                if utils.get_trigger_state() and trigger:
+                    mouse.click()
 
             # Apply recoil
             cheats.apply_recoil(utils.recoil_state, delta_time)
-
-            # Shoot if target in the center of the screen
-            if utils.get_trigger_state() and trigger:
-                mouse.click()
 
             # Move the mouse based on the previous calculations
             mouse.move(cheats.move_x, cheats.move_y)
