@@ -54,7 +54,7 @@ class Screen:
         self.upper_color = config.upper_color
         self.lower_color = config.lower_color
         self.fps = config.fps
-        self.head_height = config.head_height
+        self.aim_height = config.aim_height
         self.debug = config.debug
         self.mask = None
         self.thresh = None
@@ -119,7 +119,7 @@ class Screen:
                 for contour in contours:
                     rect_x, rect_y, rect_w, rect_h = cv2.boundingRect(contour)
                     x = rect_x + rect_w // 2 - self.fov_center[0]
-                    y = int(rect_y + rect_h * (1 - self.head_height)) - self.fov_center[0]
+                    y = int(rect_y + rect_h * (1 - self.aim_height)) - self.fov_center[0]
                     distance = np.sqrt(x**2 + y**2)
                     if distance < min_distance:
                         min_distance = distance

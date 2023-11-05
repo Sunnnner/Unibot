@@ -39,7 +39,7 @@ class ConfigReader:
         self.smooth = None
         self.speed = None
         self.x_multiplier = None
-        self.head_height = None
+        self.aim_height = None
 
         # Recoil
         self.recoil_mode = None
@@ -148,11 +148,11 @@ class ConfigReader:
         self.speed = float(self.parser.get('aim', 'speed'))
         self.x_multiplier = float(self.parser.get('aim', 'x_multiplier'))
 
-        value = float(self.parser.get('aim', 'head_height'))
+        value = float(self.parser.get('aim', 'aim_height'))
         if 0 <= value <= 1:
-            self.head_height = value
+            self.aim_height = value
         else:
-            print('ERROR: Invalid head_height value')
+            print('ERROR: Invalid aim_height value')
             exit(1)
 
         # Get recoil settings
