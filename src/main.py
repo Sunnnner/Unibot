@@ -28,7 +28,7 @@ def main():
         mouse = Mouse(config)
         screen = Screen(config)
 
-        print('ON')
+        print('Unibot ON')
 
         # Cheat loop
         while True:

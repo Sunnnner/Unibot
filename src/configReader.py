@@ -18,7 +18,7 @@ class ConfigReader:
 
         # Communication
         self.com_type = None
-        self.encrypt = False
+        self.encrypt = None
         self.ip = None
         self.port = None
         self.com_port = None
@@ -29,6 +29,9 @@ class ConfigReader:
         self.lower_color = None
         self.fov = None
         self.fps = None
+        self.auto_detect_resolution = None
+        self.resolution_x = None
+        self.resolution_y = None
 
         # Aim
         self.offset = None
@@ -79,11 +82,11 @@ class ConfigReader:
             print('ERROR: Invalid com_type value')
             exit(1)
 
-        match self.parser.get('communication', 'encrypt').lower():
-            case 'true':
-                self.encrypt = True
-            case _:
-                self.encrypt = False
+        value = self.parser.get('communication', 'encrypt').lower()
+        if value == 'true':
+            self.encrypt = True
+        else:
+            self.encrypt = False
         
         match self.com_type:
             case 'socket':
@@ -113,6 +116,15 @@ class ConfigReader:
         self.fov = int(self.parser.get('screen', 'fov'))
         fps_value = int(self.parser.get('screen', 'fps'))
         self.fps = int(np.floor(1000 / fps_value + 1))
+
+        value = self.parser.get('screen', 'auto_detect_resolution').lower()
+        if value == 'true':
+            self.auto_detect_resolution = True
+        else:
+            self.auto_detect_resolution = False
+
+        self.resolution_x = int(self.parser.get('screen', 'resolution_x'))
+        self.resolution_y = int(self.parser.get('screen', 'resolution_y'))
 
         # Get aim settings
         self.offset = int(self.parser.get('aim', 'offset'))

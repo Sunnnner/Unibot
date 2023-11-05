@@ -21,13 +21,19 @@ class Screen:
     def __init__(self, config):
         self.cam = dxcam.create(output_color="BGR")
         self.offset = config.offset
-        self.screen = size()
-        self.screen_center = (self.screen.width // 2, self.screen.height // 2)
+
+        if config.auto_detect_resolution:
+            screen_size = size()
+            self.screen = (screen_size.width, screen_size.height)
+        else:
+            self.screen = (config.resolution_x, config.resolution_y)
+
+        self.screen_center = (self.screen[0] // 2, self.screen[1] // 2)
         self.screen_region = (
             0,
             0,
-            self.screen.width,
-            self.screen.height
+            self.screen[0],
+            self.screen[1]
         )
         self.fov = config.fov
         self.fov_center = (self.fov // 2, self.fov // 2)
@@ -54,8 +60,8 @@ class Screen:
             self.display_mode = config.display_mode
             self.window_name = 'Unibot Display'
             self.window_resolution = (
-                self.screen.width // 2,
-                self.screen.height // 2
+                self.screen[0] // 2,
+                self.screen[1] // 2
             )
             cv2.namedWindow(self.window_name)
 
@@ -198,8 +204,8 @@ class Screen:
                 2
             )
 
-        offset_x = (self.screen.width - self.fov) // 2
-        offset_y = (self.screen.height - self.fov) // 2 - self.offset - recoil_offset
+        offset_x = (self.screen[0] - self.fov) // 2
+        offset_y = (self.screen[1] - self.fov) // 2 - self.offset - recoil_offset
         full_img[offset_y:offset_y+debug_img.shape[0], offset_x:offset_x+debug_img.shape[1]] = debug_img
         # Draw a rectangle crosshair
         full_img = cv2.rectangle(
