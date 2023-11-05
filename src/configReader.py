@@ -15,32 +15,44 @@ import os
 class ConfigReader:
     def __init__(self):
         self.parser = ConfigParser()
+
+        # Communication
         self.com_type = None
         self.encrypt = False
         self.ip = None
         self.port = None
         self.com_port = None
+
+        # Screen
         self.detection_type = None
         self.upper_color = None
         self.lower_color = None
         self.fov = None
         self.fps = None
+
+        # Aim
         self.offset = None
         self.smooth = None
         self.speed = None
         self.x_multiplier = None
         self.head_height = None
+
+        # Recoil
         self.recoil_mode = None
         self.recoil_x = None
         self.recoil_y = None
         self.max_offset = None
         self.recoil_recover = None
+
+        # Key binds
         self.key_reload_config = None
         self.key_toggle_aim = None
         self.key_toggle_recoil = None
         self.key_trigger = None
         self.key_exit = None
         self.aim_keys = []
+
+        # Debug
         self.debug = None
         self.display_mode = None
 

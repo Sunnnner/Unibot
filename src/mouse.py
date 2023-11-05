@@ -14,11 +14,13 @@ import win32con
 import interception
 import serial
 import socket
+import threading
 
 
 class Mouse:
     def __init__(self, config):
         self.com_type = config.com_type
+        self.click_thread = threading.Thread(target=self.send_click, args=(80,))
         
         match self.com_type:
             case 'socket':
@@ -89,6 +91,11 @@ class Mouse:
                     print(f'M({x}, {y})')
 
     def click(self):
+        if not self.click_thread.is_alive():
+            self.click_thread = threading.Thread(target=self.send_click, args=(80,))
+            self.click_thread.start()
+
+    def send_click(self, wait):
         match self.com_type:
             case 'socket':
                 self.client.sendall('C\r'.encode())
@@ -108,6 +115,7 @@ class Mouse:
                 time.sleep(random_delay)
                 win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
                 print(f'C({random_delay * 1000:g})')
+        time.sleep(wait / 1000)  # Waits for the set time so the next click isn't sent instantly after mouseup
 
     def get_response(self):  # Waits for a response before sending a new instruction
         match self.com_type:
