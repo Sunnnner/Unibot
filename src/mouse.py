@@ -20,7 +20,9 @@ import threading
 class Mouse:
     def __init__(self, config):
         self.com_type = config.com_type
-        self.click_thread = threading.Thread(target=self.send_click, args=(80,))
+        self.click_thread = threading.Thread(target=self.send_click)
+        self.last_click_time = time.time()
+        self.target_cps = config.target_cps
         
         match self.com_type:
             case 'socket':
@@ -91,11 +93,15 @@ class Mouse:
                     print(f'M({x}, {y})')
 
     def click(self):
-        if not self.click_thread.is_alive():
-            self.click_thread = threading.Thread(target=self.send_click, args=(80,))
+        if (
+                not self.click_thread.is_alive() and
+                time.time() - self.last_click_time >= 1 / self.target_cps
+        ):
+            self.click_thread = threading.Thread(target=self.send_click)
             self.click_thread.start()
 
-    def send_click(self, wait):
+    def send_click(self):
+        self.last_click_time = time.time()
         match self.com_type:
             case 'socket':
                 self.client.sendall('C\r'.encode())
@@ -115,7 +121,7 @@ class Mouse:
                 time.sleep(random_delay)
                 win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
                 print(f'C({random_delay * 1000:g})')
-        time.sleep(wait / 1000)  # Waits for the set time so the next click isn't sent instantly after mouseup
+        time.sleep((np.random.randint(10) + 25) / 1000)  # Sleep to avoid sending another click instantly after mouseup
 
     def get_response(self):  # Waits for a response before sending a new instruction
         match self.com_type:

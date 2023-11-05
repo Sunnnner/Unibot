@@ -31,11 +31,7 @@ class Cheats:
         # Reset move values so the aim doesn't keep drifting when no targets are on the screen
         self.move_x, self.move_y = (0, 0)
 
-        # Do nothing if aimbot is off
-        if not state:
-            return
-
-        if target is not None:
+        if state and target is not None:
             x, y = target
 
             # Calculate x and y speed

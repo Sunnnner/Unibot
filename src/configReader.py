@@ -44,12 +44,16 @@ class ConfigReader:
         self.max_offset = None
         self.recoil_recover = None
 
+        # Rapid fire
+        self.target_cps = None
+
         # Key binds
         self.key_reload_config = None
         self.key_toggle_aim = None
         self.key_toggle_recoil = None
-        self.key_trigger = None
         self.key_exit = None
+        self.key_trigger = None
+        self.key_rapid_fire = None
         self.aim_keys = []
 
         # Debug
@@ -144,12 +148,16 @@ class ConfigReader:
                 self.max_offset = int(self.parser.get('recoil', 'max_offset'))
                 self.recoil_recover = float(self.parser.get('recoil', 'recover'))
 
+        # Get rapid fire settings
+        self.target_cps = int(self.parser.get('rapid_fire', 'target_cps'))
+
         # Get keybind settings
         self.key_reload_config = read_hex(self.parser.get('key_binds', 'key_reload_config'))
         self.key_toggle_aim = read_hex(self.parser.get('key_binds', 'key_toggle_aim'))
         self.key_toggle_recoil = read_hex(self.parser.get('key_binds', 'key_toggle_recoil'))
-        self.key_trigger = read_hex(self.parser.get('key_binds', 'key_trigger'))
         self.key_exit = read_hex(self.parser.get('key_binds', 'key_exit'))
+        self.key_trigger = read_hex(self.parser.get('key_binds', 'key_trigger'))
+        self.key_rapid_fire = read_hex(self.parser.get('key_binds', 'key_rapid_fire'))
         aim_keys_str = self.parser.get('key_binds', 'aim_keys')
         if not aim_keys_str == 'off':
             aim_keys_str = aim_keys_str.split(',')

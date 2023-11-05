@@ -22,8 +22,9 @@ class Utils:
         self.key_reload_config = self.config.key_reload_config
         self.key_toggle_aim = self.config.key_toggle_aim
         self.key_toggle_recoil = self.config.key_toggle_recoil
-        self.key_trigger = self.config.key_trigger
         self.key_exit = self.config.key_exit
+        self.key_trigger = self.config.key_trigger
+        self.key_rapid_fire = self.config.key_rapid_fire
         self.aim_keys = self.config.aim_keys
         self.aim_state = False
         self.recoil_state = False
@@ -62,6 +63,11 @@ class Utils:
 
     def get_trigger_state(self):
         if win32api.GetAsyncKeyState(self.key_trigger) < 0:
+            return True
+        return False
+
+    def get_rapid_fire_state(self):
+        if win32api.GetAsyncKeyState(self.key_rapid_fire) < 0:
             return True
         return False
 

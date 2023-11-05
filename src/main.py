@@ -42,12 +42,15 @@ def main():
                 # Get target position and check if there is a target in the center of the screen
                 target, trigger = screen.get_target(cheats.recoil_offset)
 
-                # Calculate movement based on target position
-                cheats.calculate_aim(utils.get_aim_state(), target)
-
                 # Shoot if target in the center of the screen
                 if utils.get_trigger_state() and trigger:
                     mouse.click()
+                else:
+                    # Calculate movement based on target position
+                    cheats.calculate_aim(utils.get_aim_state(), target)
+
+            if utils.get_rapid_fire_state():
+                mouse.click()
 
             # Apply recoil
             cheats.apply_recoil(utils.recoil_state, delta_time)
