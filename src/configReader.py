@@ -126,7 +126,6 @@ class ConfigReader:
             print('ERROR: Invalid capture method')
             exit(1)
 
-
         value = self.parser.get('screen', 'auto_detect_resolution').lower()
         if value == 'true':
             self.auto_detect_resolution = True
