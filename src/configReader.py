@@ -139,8 +139,8 @@ class ConfigReader:
         self.offset = int(self.parser.get('aim', 'offset'))
 
         value = float(self.parser.get('aim', 'smooth'))
-        if 0 <= value < 1:
-            self.smooth = 1 - value
+        if 0 <= value <= 1:
+            self.smooth = 1 - value / 1.25
         else:
             print('ERROR: Invalid smooth value')
             exit(1)
