@@ -8,6 +8,7 @@
     This is the main loop of the program.
 """
 import time
+import numpy as np
 
 from cheats import Cheats
 from mouse import Mouse
@@ -44,6 +45,8 @@ def main():
 
                 # Shoot if target in the center of the screen
                 if utils.get_trigger_state() and trigger:
+                    if config.trigger_delay != 0:
+                        time.sleep((np.random.randint(config.trigger_randomization) + config.trigger_delay) / 1000)
                     mouse.click()
                 else:
                     # Calculate movement based on target position

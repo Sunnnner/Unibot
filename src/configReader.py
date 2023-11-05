@@ -44,6 +44,10 @@ class ConfigReader:
         self.max_offset = None
         self.recoil_recover = None
 
+        # Trigger
+        self.trigger_delay = None
+        self.trigger_randomization = None
+
         # Rapid fire
         self.target_cps = None
 
@@ -147,6 +151,11 @@ class ConfigReader:
                 self.recoil_y = float(self.parser.get('recoil', 'recoil_y'))
                 self.max_offset = int(self.parser.get('recoil', 'max_offset'))
                 self.recoil_recover = float(self.parser.get('recoil', 'recover'))
+
+        # Get trigger settings
+        self.trigger_delay = int(self.parser.get('trigger', 'trigger_delay'))
+        self.trigger_randomization = int(self.parser.get('trigger', 'trigger_randomization'))
+
 
         # Get rapid fire settings
         self.target_cps = int(self.parser.get('rapid_fire', 'target_cps'))
