@@ -7,8 +7,9 @@ Unibot is a program made for 3D games that detects targets on the screen based o
   
 Features:
 - Aim: Moves mouse towards the target.  
-- Recoil: Negates recoil in some FPS games.  
 - Trigger: Clicks when a target is at the center of the screen.  
+- Rapid fire: Spams left click when rapid fire button is down
+- Recoil: Negates recoil in some FPS games.   
   
 Showcase: https://youtube.com/watch?v=kHSEqLzd-O0  
 
