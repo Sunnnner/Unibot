@@ -46,8 +46,10 @@ def main():
                 # Shoot if target in the center of the screen
                 if utils.get_trigger_state() and trigger:
                     if config.trigger_delay != 0:
-                        time.sleep((np.random.randint(config.trigger_randomization) + config.trigger_delay) / 1000)
-                    mouse.click()
+                        delay_before_click = (np.random.randint(config.trigger_randomization) + config.trigger_delay) / 1000
+                    else:
+                        delay_before_click = 0
+                    mouse.click(delay_before_click)
                 else:
                     # Calculate movement based on target position
                     cheats.calculate_aim(utils.get_aim_state(), target)

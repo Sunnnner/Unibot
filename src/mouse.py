@@ -92,15 +92,16 @@ class Mouse:
                     win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, x, y, 0, 0)
                     print(f'M({x}, {y})')
 
-    def click(self):
+    def click(self, delay_before_click=0):
         if (
                 not self.click_thread.is_alive() and
                 time.time() - self.last_click_time >= 1 / self.target_cps
         ):
-            self.click_thread = threading.Thread(target=self.send_click)
+            self.click_thread = threading.Thread(target=self.send_click, args=(delay_before_click,))
             self.click_thread.start()
 
-    def send_click(self):
+    def send_click(self, delay_before_click=0):
+        time.sleep(delay_before_click)
         self.last_click_time = time.time()
         match self.com_type:
             case 'socket':

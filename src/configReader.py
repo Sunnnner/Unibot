@@ -156,7 +156,6 @@ class ConfigReader:
         self.trigger_delay = int(self.parser.get('trigger', 'trigger_delay'))
         self.trigger_randomization = int(self.parser.get('trigger', 'trigger_randomization'))
 
-
         # Get rapid fire settings
         self.target_cps = int(self.parser.get('rapid_fire', 'target_cps'))
 
