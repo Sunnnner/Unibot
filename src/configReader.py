@@ -29,6 +29,7 @@ class ConfigReader:
         self.lower_color = None
         self.fov = None
         self.fps = None
+        self.capture_method = None
         self.auto_detect_resolution = None
         self.resolution_x = None
         self.resolution_y = None
@@ -116,6 +117,15 @@ class ConfigReader:
         self.fov = int(self.parser.get('screen', 'fov'))
         fps_value = int(self.parser.get('screen', 'fps'))
         self.fps = int(np.floor(1000 / fps_value + 1))
+
+        value = self.parser.get('screen', 'capture_method').lower()
+        capture_method_list = ['dxcam', 'mss']
+        if value in capture_method_list:
+            self.capture_method = value
+        else:
+            print('ERROR: Invalid capture method')
+            exit(1)
+
 
         value = self.parser.get('screen', 'auto_detect_resolution').lower()
         if value == 'true':

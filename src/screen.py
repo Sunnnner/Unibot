@@ -14,12 +14,19 @@
 import cv2
 import numpy as np
 import dxcam
+from mss import mss
 from pyautogui import size
 
 
 class Screen:
     def __init__(self, config):
-        self.cam = dxcam.create(output_color="BGR")
+        self.capture_method = config.capture_method
+
+        if self.capture_method == 'dxcam':
+            self.cam = dxcam.create(output_color="BGR")
+        else:
+            self.cam = mss()
+
         self.offset = config.offset
 
         if config.auto_detect_resolution:
@@ -70,7 +77,7 @@ class Screen:
 
     def screenshot(self, region):
         while True:
-            image = self.cam.grab(region=region)
+            image = self.cam.grab(region)
             if image is not None:
                 return np.array(image)
 
