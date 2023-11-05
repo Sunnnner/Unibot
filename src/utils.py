@@ -7,7 +7,6 @@
     ./src/utils.py
     This class is used to read the config and to check if each feature is on.
 """
-import keyboard
 import win32api
 from time import sleep
 
@@ -30,20 +29,20 @@ class Utils:
         self.recoil_state = False
 
     def check_key_binds(self):  # Return a boolean based on if the config needs to be reloaded
-        if keyboard.is_pressed(self.key_reload_config):
+        if win32api.GetAsyncKeyState(self.key_reload_config) < 0:
             return True
 
-        if keyboard.is_pressed(self.key_toggle_aim):
+        if win32api.GetAsyncKeyState(self.key_toggle_aim) < 0:
             self.aim_state = not self.aim_state
             print("AIM: " + str(self.aim_state))
             sleep(self.delay)
 
-        if keyboard.is_pressed(self.key_toggle_recoil):
+        if win32api.GetAsyncKeyState(self.key_toggle_recoil) < 0:
             self.recoil_state = not self.recoil_state
             print("RECOIL: " + str(self.recoil_state))
             sleep(self.delay)
         
-        if keyboard.is_pressed(self.key_exit):
+        if win32api.GetAsyncKeyState(self.key_exit) < 0:
             print("Exiting")
             exit(1)
         return False

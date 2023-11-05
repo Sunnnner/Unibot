@@ -133,16 +133,16 @@ class ConfigReader:
                 self.recoil_recover = float(self.parser.get('recoil', 'recover'))
 
         # Get keybind settings
-        self.key_reload_config = self.parser.get('key_binds', 'key_reload_config')
-        self.key_toggle_aim = self.parser.get('key_binds', 'key_toggle_aim')
-        self.key_toggle_recoil = self.parser.get('key_binds', 'key_toggle_recoil')
-        self.key_trigger = int(self.parser.get('key_binds', 'key_trigger'))
-        self.key_exit = self.parser.get('key_binds', 'key_exit')
+        self.key_reload_config = read_hex(self.parser.get('key_binds', 'key_reload_config'))
+        self.key_toggle_aim = read_hex(self.parser.get('key_binds', 'key_toggle_aim'))
+        self.key_toggle_recoil = read_hex(self.parser.get('key_binds', 'key_toggle_recoil'))
+        self.key_trigger = read_hex(self.parser.get('key_binds', 'key_trigger'))
+        self.key_exit = read_hex(self.parser.get('key_binds', 'key_exit'))
         aim_keys_str = self.parser.get('key_binds', 'aim_keys')
         if not aim_keys_str == 'off':
             aim_keys_str = aim_keys_str.split(',')
             for key in aim_keys_str:
-                self.aim_keys.append(int(key))
+                self.aim_keys.append(read_hex(key))
         else:
             self.aim_keys = ['off']
 
@@ -159,3 +159,7 @@ class ConfigReader:
                 exit(1)
         else:
             self.debug = False
+
+
+def read_hex(string):
+    return int(string, 16)
