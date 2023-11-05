@@ -5,7 +5,7 @@
   
 <a href="https://discord.gg/uF2KESAU2J" target="_blank" rel="noreferrer">
  <img src="https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white" /></a>  
-
+  
 Unibot is a program made for 3D games that detects targets on the screen based on a specified range of color.  
   
 Features:
